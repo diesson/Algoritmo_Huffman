@@ -31,9 +31,29 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="arvore.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="arvore.h" />
+		<Unit filename="huffman.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="huffman.h" />
+		<Unit filename="lista_enc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lista_enc.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="no.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="no.h" />
+		<Unit filename="vertice.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="vertice.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
