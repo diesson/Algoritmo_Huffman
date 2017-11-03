@@ -18,4 +18,7 @@ void arvore_adiciona_filhos(arvore_t * arvore, vertice_t *vertice, int esq, int 
 void arvore_set_raiz (arvore_t *arvore, vertice_t* vertice);
 void libera_arvore(arvore_t *arvore);
 
+vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s);
+void imprimi_freq(arvore_t* arvore);
+
 #endif /* SRC_ARVORE_ARVORE_H_ */

@@ -33,7 +33,7 @@ vertice_t *cria_vertice(int id){
 
 	p->id = id;
 	p->simbolo = '\n';
-	p->freq = 0;
+	p->freq = 1;
 	p->direita = NULL;
 	p->esquerda = NULL;
 	p->pai = NULL;
@@ -156,5 +156,27 @@ int vertice_eh_folha(vertice_t *vertice){
 		return TRUE;
 
 	return FALSE;
+
+}
+
+int vertice_get_freq(vertice_t * vertice){
+
+	if (vertice == NULL){
+			fprintf(stderr, "vertice_get_freq: vertice invalido\n");
+			exit(EXIT_FAILURE);
+	}
+
+	return vertice->freq;
+
+}
+
+void vertice_set_freq(vertice_t * vertice, int freq){
+
+	if (vertice == NULL){
+			fprintf(stderr, "vertice_set_freq: vertice invalido\n");
+			exit(EXIT_FAILURE);
+	}
+
+	vertice->freq = freq;
 
 }

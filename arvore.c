@@ -135,9 +135,9 @@ void arvore_adiciona_filhos(arvore_t * arvore, vertice_t *vertice, int esq, int 
 
 void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
 
-    FILE *file;
-	no_t *no_vert;
-	vertice_t *vertice;
+    FILE* file;
+	no_t* no_vert;
+	vertice_t* vertice;
 
     if (filename == NULL || grafo == NULL){
 		fprintf(stderr, "arvore_exportar_grafo_dot: ponteiros invalidos\n");
@@ -160,14 +160,14 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         if(vertice_get_esq(vertice) != NULL){
 
         fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_esq(vertice) ));
-        printf("\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_esq(vertice) ));
+        printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_esq(vertice) ), vertice_get_freq(vertice));
 
         }
 
         if(vertice_get_dir(vertice) != NULL){
 
             fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
-            printf("\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
+            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_dir(vertice) ), vertice_get_freq(vertice));
 
         }
 
@@ -236,4 +236,55 @@ lista_enc_t* arvore_obter_vertices(arvore_t* arvore){
 	return arvore->vertices;
 }
 
+vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s){
 
+	no_t *no_lista;
+	vertice_t *vertice;
+	int meu_s;
+
+	if (arvore == NULL)	{
+		fprintf(stderr,"arvore_procura_simbolo: arvore invalida!");
+		exit(EXIT_FAILURE);
+	}
+
+	if (lista_vazia(arvore->vertices) == TRUE)
+		return FALSE;
+
+	no_lista = obter_cabeca(arvore->vertices);
+
+	while (no_lista){
+
+		vertice = obter_dado(no_lista);
+
+		meu_s = vertice_get_simbolo(vertice);
+
+		if (meu_s == s) {
+			return vertice;
+		}
+
+		no_lista = obtem_proximo(no_lista);
+
+	}
+
+	return NULL;
+
+}
+
+void imprimi_freq(arvore_t* arvore){
+
+    no_t* no_vert;
+	vertice_t* vertice;
+
+    no_vert = obter_cabeca(arvore->vertices);
+    while (no_vert){
+        vertice = obter_dado(no_vert);
+
+        if(vertice_get_simbolo(vertice) == '\n')
+            printf("%d(%s)[freq: %d];\n", vertice_get_id(vertice), "\\n", vertice_get_freq(vertice));
+        else
+            printf("%d(%c)[freq: %d];\n", vertice_get_id(vertice), vertice_get_simbolo(vertice), vertice_get_freq(vertice));
+
+        no_vert = obtem_proximo(no_vert);
+    }
+
+}

@@ -24,4 +24,7 @@ char vertice_get_simbolo(vertice_t* vertice);
 
 int vertice_eh_folha(vertice_t* vertice);
 
+int vertice_get_freq(vertice_t * vertice);
+void vertice_set_freq(vertice_t * vertice, int freq);
+
 #endif /* GRAFO_VERTICE_H_ */
