@@ -37,10 +37,11 @@ void frequencia_caracter(arvore_t* arvore, FILE* file){
 
             vertice = arvore_adicionar_vertice_id(arvore, i);
             vertice_set_simbolo(vertice, caracter);
+            i++;
 
         }
 
-        i++;
+
 
         if (feof(file))
             break;
