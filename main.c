@@ -35,7 +35,7 @@ int main(int argc, const char* argv[]){
 
     if(strcmp("-c", argv[1]) == 0){ // Se escolhido a opcao -c -> compactar
 
-        if( strstr(argv[3], ".dej") ){ // Verificacao da extencao
+        if( strstr(argv[3], ".dej") ){ // Verificacao da extensao
 
             compactar(argv[2], argv[3]);
 
@@ -49,7 +49,7 @@ int main(int argc, const char* argv[]){
 
     }else if(strcmp("-d", argv[1]) == 0){ // Se escolhido a opcao -d -> descompactar
 
-        if(strstr(argv[2], ".dej")){ // Verificacao da extencao
+        if(strstr(argv[2], ".dej")){ // Verificacao da extensao
 
             descompactar(argv[2], argv[3]);
 
