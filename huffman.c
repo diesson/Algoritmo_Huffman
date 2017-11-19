@@ -16,6 +16,7 @@
 //#include "pilha.h"
 
 #define DEBUG
+
 void frequencia_caracter(arvore_t* arvore, FILE* file){
 
     int i = 0, freq;
