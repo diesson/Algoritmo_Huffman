@@ -239,3 +239,7 @@ void *remover_no(lista_enc_t *lista, no_t *no_removido)
 	return dado;
 }
 
+int lista_get_tamanho(lista_enc_t* lista){
+
+    return lista->tamanho;
+}

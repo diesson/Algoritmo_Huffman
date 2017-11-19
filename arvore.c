@@ -151,6 +151,7 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
 	}
 
 	fprintf(file, "graph grafo_%d {\n", grafo->id);
+	printf("\n");
 	printf("graph grafo_%d {\n", grafo->id);
 
     no_vert = obter_cabeca(grafo->vertices);
@@ -158,17 +159,37 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         vertice = obter_dado(no_vert);
 
         if(vertice_get_esq(vertice) != NULL){
-
-        fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_esq(vertice) ));
-        printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_esq(vertice) ), vertice_get_freq(vertice));
-
+            fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
+            if(vertice_get_id(vertice_get_esq(vertice)) < 257){
+                if(vertice_get_simbolo(vertice_get_esq(vertice)) == '\n' || vertice_get_simbolo(vertice_get_esq(vertice)) == '\"')
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) \\n \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                        vertice_get_freq(vertice_get_esq(vertice)));
+                else
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                        vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
+            }
+            else
+                fprintf(file, "\t%d [ label = \" (FREQ: %d)\"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                        vertice_get_freq(vertice_get_esq(vertice)));
+            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_esq(vertice) ), vertice_get_freq(vertice));
         }
 
         if(vertice_get_dir(vertice) != NULL){
-
             fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
-            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_dir(vertice) ), vertice_get_freq(vertice));
+            if(vertice_get_id(vertice_get_dir(vertice)) < 257){
+                if(vertice_get_simbolo(vertice_get_dir(vertice))== '\n' || vertice_get_simbolo(vertice_get_dir(vertice))== '\"')
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) \\n \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                        vertice_get_freq(vertice_get_dir(vertice)));
+                else
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                        vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
 
+            }
+            else{
+                fprintf(file, "\t%d [ label = \" (FREQ: %d) \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                        vertice_get_freq(vertice_get_dir(vertice)));
+            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_dir(vertice) ), vertice_get_freq(vertice));
+            }
         }
 
         no_vert = obtem_proximo(no_vert);
