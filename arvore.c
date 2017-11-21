@@ -159,10 +159,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         vertice = obter_dado(no_vert);
 
         if(vertice_get_esq(vertice) != NULL){
-            fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
+            fprintf(file, "\t%d -- %d [label = 1];\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
             if(vertice_get_id(vertice_get_esq(vertice)) < 257){
-                if(vertice_get_simbolo(vertice_get_esq(vertice)) == '\n' || vertice_get_simbolo(vertice_get_esq(vertice)) == '\"')
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) \\n \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                if(vertice_get_simbolo(vertice_get_esq(vertice)) < 32)
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)));
                 else
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_esq(vertice)),
@@ -175,10 +175,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         }
 
         if(vertice_get_dir(vertice) != NULL){
-            fprintf(file, "\t%d -- %d;\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
+            fprintf(file, "\t%d -- %d [label = 0];\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
             if(vertice_get_id(vertice_get_dir(vertice)) < 257){
-                if(vertice_get_simbolo(vertice_get_dir(vertice))== '\n' || vertice_get_simbolo(vertice_get_dir(vertice))== '\"')
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) \\n \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                if(vertice_get_simbolo(vertice_get_dir(vertice)) < 32)
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)));
                 else
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_dir(vertice)),
@@ -309,3 +309,29 @@ void imprimi_freq(arvore_t* arvore){
     }
 
 }
+/*
+void varrer_arvore(vertice_t* vertice, int bit, fila_t* fila){
+
+    int i;
+
+    if(vertice == NULL){
+        i = dequeue(fila);
+        return;
+    }
+
+    if(bit > -1)
+        enqueue(1, fila);
+
+    varrer_arvore( vertice_get_esq(vertice), 1, fila );
+    varrer_arvore( vertice_get_dir(vertice), 0, fila );
+
+    printf("%d; ", vertice_get_id(vertice));
+    while(fila_vazia(fila)){
+        dados = malloc( sizeof(formula_t) );
+        i = dequeue(fila);
+
+    }
+    //vertice_set_visitar(vertice, TRUE);
+
+}
+*/

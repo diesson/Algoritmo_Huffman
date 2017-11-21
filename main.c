@@ -4,7 +4,7 @@
 
 # include "huffman.h"
 
-int main(int argc, const char* argv[]){
+int main(int argc, char* argv[]){
 
     if(argc < 4){
 
@@ -25,7 +25,7 @@ int main(int argc, const char* argv[]){
         }else{ // Caso tenha menos de 4 argumentos [executavel, opcao, primeiro arquivo e segundo arquivo]
 
             //printf("Teste: %d\n", argc);
-            printf("huffman: Falta operando\n");
+            printf("huffman: Falta operando: %d\n", argc);
             printf("Tente: \"huffman --help\" para mais informacoes.\n");
 
             return 0;

@@ -13,7 +13,7 @@ struct vertices{
 	char simbolo; // int, string ou char?
 	int freq;
 
-	byte info; // Vai isso?
+	byte_t info; // Vai isso?
 
     vertice_t* pai;
 	vertice_t* direita;

@@ -4,7 +4,7 @@
 #include "lista_enc.h"
 
 typedef struct vertices vertice_t;
-typedef unsigned char byte;
+typedef unsigned char byte_t;
 
 typedef enum status_aresta { VAZIO, EXPORTADA } status_aresta_t; // ?
 

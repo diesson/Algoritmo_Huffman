@@ -15,7 +15,7 @@
 // Pilha
 //#include "pilha.h"
 
-#define DEBUG
+#undef DEBUG
 
 void frequencia_caracter(arvore_t* arvore, FILE* file){
 
@@ -48,46 +48,9 @@ void frequencia_caracter(arvore_t* arvore, FILE* file){
 
     }
 
-    imprimi_freq(arvore);
-
-}
-
-void compactar(const char* arquivo_i, const char* arquivo_f){
-
-    FILE* file_in;
-    FILE* file_out;
-    arvore_t* arvore;
-
-    if (arquivo_i == NULL || arquivo_i == NULL){
-		fprintf(stderr, "compactar: ponteiros invalidos\n");
-		exit(EXIT_FAILURE);
-	}
-
-    file_in = fopen(arquivo_i, "rb");
-    if (file_in == NULL){
-		perror("compactar: erro fopen\n");
-		exit(EXIT_FAILURE);
-	}
-
-    file_out = fopen(arquivo_f, "wb");
-    if (file_out == NULL){
-		perror("compactar: erro fopen\n");
-		exit(EXIT_FAILURE);
-	}
-
-    arvore = cria_arvore(1);
-    frequencia_caracter(arvore, file_in);
-    arvore = cria_arvore_huffman(arvore);
-
 #ifdef DEBUG
-    arvore_exportar_grafo_dot("arvore.dot", arvore);
+    imprimi_freq(arvore);
 #endif // DEBUG
-
-}
-
-void descompactar(const char* arquivo_i, const char* arquivo_f){
-
-
 
 }
 
@@ -152,3 +115,59 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     arvore_adicionar_vertice(arvore_huffman, vertice_get_pai(menor_vertice_1));
     return arvore_huffman;
 }
+
+byte_t criar_byte(int* bits){
+
+    char byte = 0;
+    int i;
+
+    for(i = 0; i < 8; i++){
+
+        byte += bits[i];
+        byte <<= 1;
+
+    }
+
+    return byte;
+
+}
+
+void compactar(const char* arquivo_i, const char* arquivo_f){
+
+    FILE* file_in;
+    FILE* file_out;
+    arvore_t* arvore;
+
+    if (arquivo_i == NULL || arquivo_i == NULL){
+		fprintf(stderr, "compactar: ponteiros invalidos\n");
+		exit(EXIT_FAILURE);
+	}
+
+    file_in = fopen(arquivo_i, "rb");
+    if (file_in == NULL){
+		perror("compactar: erro fopen\n");
+		exit(EXIT_FAILURE);
+	}
+
+    file_out = fopen(arquivo_f, "wb");
+    if (file_out == NULL){
+		perror("compactar: erro fopen\n");
+		exit(EXIT_FAILURE);
+	}
+
+    arvore = cria_arvore(1);
+    frequencia_caracter(arvore, file_in);
+    arvore = cria_arvore_huffman(arvore);
+
+#ifdef DEBUG
+    arvore_exportar_grafo_dot("arvore.dot", arvore);
+#endif // DEBUG
+
+}
+
+void descompactar(const char* arquivo_i, const char* arquivo_f){
+
+
+
+}
+

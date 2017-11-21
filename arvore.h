@@ -2,6 +2,7 @@
 #define SRC_ARVORE_ARVORE_H_
 
 #include "vertice.h"
+#include "fila.h"
 
 typedef struct arvores arvore_t;
 
@@ -20,5 +21,6 @@ void libera_arvore(arvore_t *arvore);
 
 vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s);
 void imprimi_freq(arvore_t* arvore);
+void varrer_arvore(vertice_t* vertice, int bit, fila_t* fila);
 
 #endif /* SRC_ARVORE_ARVORE_H_ */
