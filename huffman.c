@@ -82,9 +82,9 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             if(vertice_get_freq(vertice_tmp)<vertice_get_freq(menor_vertice_1)){
                 enqueue(menor_vertice_1,fila_2);
                 menor_vertice_1 = vertice_tmp;
-            }
-            else
+            }else{
                 enqueue(vertice_tmp,fila_2);
+            }
         }
 
         menor_vertice_2 = dequeue(fila_2);
@@ -93,9 +93,9 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             if(vertice_get_freq(vertice_tmp)<vertice_get_freq(menor_vertice_2)){
                 enqueue(menor_vertice_2,fila_1);
                 menor_vertice_2 = vertice_tmp;
-            }
-            else
+            }else{
                 enqueue(vertice_tmp,fila_1);
+            }
         }
 #ifdef DEBUG
         printf("\ncria_arvore_huffman: menores valores de frequencia obtidos");
