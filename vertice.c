@@ -9,11 +9,12 @@
 #define FALSE 0
 
 struct vertices{
-	int id; // precisa?
-	char simbolo; // int, string ou char?
+	int id;
+	char simbolo;
 	int freq;
 
-	byte_t info; // Vai isso?
+	fila_t* bits;
+	//byte_t info;
 
     vertice_t* pai;
 	vertice_t* direita;

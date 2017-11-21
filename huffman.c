@@ -15,7 +15,7 @@
 // Pilha
 //#include "pilha.h"
 
-#undef DEBUG
+#define DEBUG
 
 void frequencia_caracter(arvore_t* arvore, FILE* file){
 
@@ -76,8 +76,10 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     }
 
     while(lista_get_tamanho(fila_obter_dados(fila_1)) > 1){
+
         menor_vertice_1 = dequeue(fila_1);
         while(!fila_vazia(fila_1)){
+
             vertice_t* vertice_tmp = dequeue(fila_1);
             if(vertice_get_freq(vertice_tmp)<vertice_get_freq(menor_vertice_1)){
                 enqueue(menor_vertice_1,fila_2);
@@ -85,10 +87,12 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             }else{
                 enqueue(vertice_tmp,fila_2);
             }
+
         }
 
         menor_vertice_2 = dequeue(fila_2);
         while(!fila_vazia(fila_2)){
+
             vertice_t* vertice_tmp = dequeue(fila_2);
             if(vertice_get_freq(vertice_tmp)<vertice_get_freq(menor_vertice_2)){
                 enqueue(menor_vertice_2,fila_1);
@@ -96,12 +100,15 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             }else{
                 enqueue(vertice_tmp,fila_1);
             }
+
         }
+
 #ifdef DEBUG
         printf("\ncria_arvore_huffman: menores valores de frequencia obtidos");
         printf("\nVertice: %d, Freq: %d\n",vertice_get_id(menor_vertice_1),vertice_get_freq(menor_vertice_1));
         printf("Vertice: %d, Freq: %d\n",vertice_get_id(menor_vertice_2),vertice_get_freq(menor_vertice_2));
 #endif // DEBUG
+
         vertice_t* novo_vertice = cria_vertice(i++);
         vertice_set_esq(novo_vertice, menor_vertice_1);
         vertice_set_dir(novo_vertice, menor_vertice_2);
@@ -111,8 +118,10 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
         arvore_adicionar_vertice(arvore_huffman, menor_vertice_1);
         arvore_adicionar_vertice(arvore_huffman, menor_vertice_2);
         enqueue(novo_vertice, fila_1);
+
     }
     arvore_adicionar_vertice(arvore_huffman, vertice_get_pai(menor_vertice_1));
+
     return arvore_huffman;
 }
 

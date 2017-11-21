@@ -167,11 +167,11 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
                 else
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
-            }
-            else
+            }else{
                 fprintf(file, "\t%d [ label = \" (FREQ: %d)\"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)));
-            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_esq(vertice) ), vertice_get_freq(vertice));
+                printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_esq(vertice) ), vertice_get_freq(vertice));
+            }
         }
 
         if(vertice_get_dir(vertice) != NULL){
@@ -184,16 +184,19 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
 
-            }
-            else{
+            }else{
                 fprintf(file, "\t%d [ label = \" (FREQ: %d) \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)));
-            printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_dir(vertice) ), vertice_get_freq(vertice));
+                printf("\t%d -- %d[FREQ: %d];\n", vertice_get_id(vertice), vertice_get_simbolo( vertice_get_dir(vertice) ), vertice_get_freq(vertice));
             }
         }
 
         no_vert = obtem_proximo(no_vert);
     }
+
+    no_vert = obter_cauda(grafo->vertices);
+    vertice = obter_dado(no_vert);
+    fprintf(file, "\t%d [ label = \" (FREQ: %d) \"];\n", vertice_get_id(vertice), vertice_get_freq(vertice));
 
 	fprintf(file, "}\n");
 	printf("}\n");

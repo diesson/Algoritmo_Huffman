@@ -8,6 +8,7 @@ typedef struct listas_enc lista_enc_t;
 lista_enc_t *cria_lista_enc(void);
 void add_cauda(lista_enc_t *lista, no_t* elemento);
 no_t *obter_cabeca(lista_enc_t *lista);
+no_t *obter_cauda(lista_enc_t *lista);
 int lista_vazia(lista_enc_t *lista);
 
 no_t *remover_cauda(lista_enc_t *lista);
