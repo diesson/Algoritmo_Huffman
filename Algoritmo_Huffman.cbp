@@ -54,6 +54,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="no.h" />
+		<Unit filename="pilha.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pilha.h" />
 		<Unit filename="vertice.c">
 			<Option compilerVar="CC" />
 		</Unit>

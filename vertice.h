@@ -2,6 +2,7 @@
 #define GRAFO_VERTICE_H_
 
 #include "lista_enc.h"
+#include "pilha.h"
 
 typedef struct vertices vertice_t;
 typedef unsigned char byte_t;
@@ -26,5 +27,6 @@ int vertice_eh_folha(vertice_t* vertice);
 
 int vertice_get_freq(vertice_t * vertice);
 void vertice_set_freq(vertice_t * vertice, int freq);
+void guardar_bits(pilha_t* pilha, vertice_t* vert);
 
 #endif /* GRAFO_VERTICE_H_ */

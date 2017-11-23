@@ -15,7 +15,7 @@
 // Pilha
 //#include "pilha.h"
 
-#define DEBUG
+#undef DEBUG
 
 void frequencia_caracter(arvore_t* arvore, FILE* file){
 
@@ -121,6 +121,7 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
 
     }
     arvore_adicionar_vertice(arvore_huffman, vertice_get_pai(menor_vertice_1));
+    arvore_set_raiz(arvore_huffman, vertice_get_pai(menor_vertice_1));
 
     return arvore_huffman;
 }
@@ -146,6 +147,7 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     FILE* file_in;
     FILE* file_out;
     arvore_t* arvore;
+    pilha_t* pilha;
 
     if (arquivo_i == NULL || arquivo_i == NULL){
 		fprintf(stderr, "compactar: ponteiros invalidos\n");
@@ -167,6 +169,10 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     arvore = cria_arvore(1);
     frequencia_caracter(arvore, file_in);
     arvore = cria_arvore_huffman(arvore);
+
+    pilha = cria_pilha();
+    varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
+    libera_pilha(pilha);
 
 #ifdef DEBUG
     arvore_exportar_grafo_dot("arvore.dot", arvore);

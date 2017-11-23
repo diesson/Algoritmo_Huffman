@@ -5,6 +5,7 @@
 #include "arvore.h"
 #include "lista_enc.h"
 #include "no.h"
+#include "pilha.h"
 //#include "fila.h"
 
 #define FALSE 0
@@ -312,29 +313,22 @@ void imprimi_freq(arvore_t* arvore){
     }
 
 }
-/*
-void varrer_arvore(vertice_t* vertice, int bit, fila_t* fila){
 
-    int i;
+void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
 
-    if(vertice == NULL){
-        i = dequeue(fila);
+    if(vertice == NULL)
         return;
-    }
 
     if(bit > -1)
-        enqueue(1, fila);
+        push_int(bit, pilha);
 
-    varrer_arvore( vertice_get_esq(vertice), 1, fila );
-    varrer_arvore( vertice_get_dir(vertice), 0, fila );
+    varrer_arvore( vertice_get_esq(vertice), 1, pilha );
+    varrer_arvore( vertice_get_dir(vertice), 0, pilha );
+    if(vertice_eh_folha(vertice))
+        guardar_bits(pilha, vertice);
 
-    printf("%d; ", vertice_get_id(vertice));
-    while(fila_vazia(fila)){
-        dados = malloc( sizeof(formula_t) );
-        i = dequeue(fila);
-
-    }
-    //vertice_set_visitar(vertice, TRUE);
+    if(!pilha_vazia(pilha))
+        pop_int(pilha);
 
 }
-*/
+

@@ -60,7 +60,6 @@ void *dequeue(fila_t *fila){
 
 }
 
-
 void libera_fila(fila_t* fila){
 
     if (fila == NULL){
@@ -92,4 +91,36 @@ int fila_vazia(fila_t *fila){
 lista_enc_t* fila_obter_dados (fila_t* fila){
 
     return fila->dados;
+}
+
+void enqueue_int(int dado, fila_t* fila){
+
+	no_t* no;
+
+    if (fila == NULL){
+        fprintf(stderr, "push: pilha invalida\n");
+        exit(EXIT_FAILURE);
+    }
+
+    no = cria_no(dado);
+    add_cauda(fila->dados, no);
+
+}
+
+int dequeue_int(fila_t* fila){
+
+	no_t *no;
+	int dado;
+
+    if (fila == NULL){
+        fprintf(stderr, "dequeue: fila invalida!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    no = remover_cabeca(fila->dados);
+    dado = obter_dado(no);
+    free(no);
+
+    return dado;
+
 }

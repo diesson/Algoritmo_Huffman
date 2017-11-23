@@ -4,9 +4,13 @@
 #include "vertice.h"
 #include "lista_enc.h"
 #include "no.h"
+#include "fila.h"
+#include "pilha.h"
 
 #define TRUE 1
 #define FALSE 0
+
+#define DEBUG
 
 struct vertices{
 	int id;
@@ -25,6 +29,7 @@ struct vertices{
 vertice_t *cria_vertice(int id){
 
 	vertice_t *p = NULL;
+    fila_t* fila;
 
 	p = malloc(sizeof(vertice_t));
 	if (p == NULL) {
@@ -35,6 +40,8 @@ vertice_t *cria_vertice(int id){
 	p->id = id;
 	p->simbolo = '\n';
 	p->freq = 1;
+	fila = cria_fila();
+	p->bits = fila;
 	p->direita = NULL;
 	p->esquerda = NULL;
 	p->pai = NULL;
@@ -171,7 +178,7 @@ int vertice_get_freq(vertice_t * vertice){
 
 }
 
-void vertice_set_freq(vertice_t * vertice, int freq){
+void vertice_set_freq(vertice_t* vertice, int freq){
 
 	if (vertice == NULL){
 			fprintf(stderr, "vertice_set_freq: vertice invalido\n");
@@ -180,4 +187,50 @@ void vertice_set_freq(vertice_t * vertice, int freq){
 
 	vertice->freq = freq;
 
+}
+
+void guardar_bits(pilha_t* pilha, vertice_t* vert){
+
+    int i;
+    pilha_t* pilha_2;
+    pilha_t* pilha_3;
+
+    pilha_2 = cria_pilha();
+    pilha_3 = cria_pilha();
+
+    if (pilha == NULL){
+			fprintf(stderr, "guardar_bits: pilha invalida\n");
+			exit(EXIT_FAILURE);
+	}
+
+    while(!pilha_vazia(pilha)){
+        i = pop_int(pilha);
+        push_int(i, pilha_2);
+        push_int(i, pilha_3);
+    }
+#ifdef DEBUG
+    if(vert->simbolo > 32)
+        printf("%d - Bits [%c]: ", vert->id, vert->simbolo);
+    else
+        printf("%d - Bits [ ]: ", vert->id);
+#endif // DEBUG
+
+	while(!pilha_vazia(pilha_2)){
+
+        i = pop_int(pilha_2);
+#ifdef DEBUG
+        printf("%d", i);
+#endif // DEBUG
+        enqueue_int(i, vert->bits);
+
+    }
+#ifdef DEBUG
+    printf("\n");
+#endif // DEBUG
+
+    while(!pilha_vazia(pilha_3))
+        push_int(pop_int(pilha_3), pilha);
+
+    libera_pilha(pilha_2);
+    libera_pilha(pilha_3);
 }
