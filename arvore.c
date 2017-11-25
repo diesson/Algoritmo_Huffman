@@ -324,6 +324,7 @@ void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
 
     varrer_arvore( vertice_get_esq(vertice), 1, pilha );
     varrer_arvore( vertice_get_dir(vertice), 0, pilha );
+
     if(vertice_eh_folha(vertice))
         guardar_bits(pilha, vertice);
 

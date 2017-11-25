@@ -220,7 +220,7 @@ void guardar_bits(pilha_t* pilha, vertice_t* vert){
         i = pop_int(pilha_2);
 #ifdef DEBUG
         printf("%d", i);
-#endif // DEBUG
+#endif // DEBUGcd
         enqueue_int(i, vert->bits);
 
     }
