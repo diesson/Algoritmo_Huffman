@@ -11,7 +11,6 @@
 #define FALSE 0
 #define TRUE 1
 
-
 struct arvores{
 	int id;
 	vertice_t *raiz;
@@ -333,3 +332,31 @@ void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
 
 }
 
+char* arvore_cria_vetor_caracteres (arvore_t* arvore, vertice_t* inicial){
+
+    int n = lista_get_tamanho(arvore->vertices);
+    char* vetor_arvore = NULL;
+
+	vetor_arvore = (char*) malloc(sizeof(char)*n);
+
+    n = 0;
+    fila_t* fila = cria_fila();
+
+    enqueue(inicial,fila);
+
+    while (!fila_vazia(fila)){
+        vertice_t* elemento = dequeue(fila);
+        vetor_arvore[n++] = vertice_get_simbolo(elemento);
+
+        if(vertice_get_esq(elemento) != NULL){
+            enqueue(vertice_get_esq(elemento), fila);
+        }
+        if(vertice_get_dir(elemento) != NULL){
+            enqueue(vertice_get_dir(elemento), fila);
+        }
+    }
+
+
+
+    return vetor_arvore;
+}

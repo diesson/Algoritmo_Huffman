@@ -38,7 +38,7 @@ vertice_t *cria_vertice(int id){
 	}
 
 	p->id = id;
-	p->simbolo = '\n';
+	p->simbolo = 0;
 	p->freq = 1;
 	fila = cria_fila();
 	p->bits = fila;

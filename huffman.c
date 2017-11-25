@@ -15,7 +15,7 @@
 // Pilha
 //#include "pilha.h"
 
-#undef DEBUG
+#define DEBUG
 
 void frequencia_caracter(arvore_t* arvore, FILE* file){
 
@@ -169,9 +169,19 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     arvore = cria_arvore(1);
     frequencia_caracter(arvore, file_in);
     arvore = cria_arvore_huffman(arvore);
+    char* vetor_arvore = arvore_cria_vetor_caracteres(arvore, arvore_get_raiz(arvore));
+
+#ifdef DEBUG
+    int n;
+
+    printf("\n\nElementos do vetor gerado por arvore_cria_vetor_caracteres:\n");
+    for(n=0; n<lista_get_tamanho(arvore_obter_vertices(arvore)); n++){
+        printf("\tVertice [%d]: %c\n", n, vetor_arvore[n]);
+    }
+#endif // DEBUG
 
     pilha = cria_pilha();
-    varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
+    //varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
     libera_pilha(pilha);
 
 #ifdef DEBUG
