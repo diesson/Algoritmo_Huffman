@@ -66,7 +66,7 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     fila_t* fila_2 = cria_fila();
     vertice_t* menor_vertice_1;
     vertice_t* menor_vertice_2;
-    int i = 257;
+    int i = 256;
 
     no_t* no = obter_cabeca(arvore_obter_vertices(arvore));
     while(no){
@@ -87,7 +87,6 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             }else{
                 enqueue(vertice_tmp,fila_2);
             }
-
         }
 
         menor_vertice_2 = dequeue(fila_2);
@@ -100,7 +99,6 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
             }else{
                 enqueue(vertice_tmp,fila_1);
             }
-
         }
 
 #ifdef DEBUG
@@ -148,8 +146,9 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     FILE* file_out;
     arvore_t* arvore;
     pilha_t* pilha;
+    int i, tamanho;
 
-    if (arquivo_i == NULL || arquivo_i == NULL){
+    if (arquivo_i == NULL || arquivo_f == NULL){
 		fprintf(stderr, "compactar: ponteiros invalidos\n");
 		exit(EXIT_FAILURE);
 	}
@@ -171,18 +170,16 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     arvore = cria_arvore_huffman(arvore);
     char* vetor_arvore = arvore_cria_vetor_caracteres(arvore, arvore_get_raiz(arvore));
 
-    int tamanho = lista_get_tamanho(arvore_obter_vertices(arvore));
+    tamanho = lista_get_tamanho(arvore_obter_vertices(arvore));
     fwrite(&tamanho, sizeof(tamanho), 1, file_out);
 
-    int i;
-    for(i=0; i<lista_get_tamanho(arvore_obter_vertices(arvore)); i++){
+    for(i=0; i<tamanho; i++){
         fwrite(&vetor_arvore[i], sizeof(char), 1, file_out);
     }
 #ifdef DEBUG
     int n;
-
     printf("\n\nElementos do vetor gerado por arvore_cria_vetor_caracteres:\n");
-    for(n=0; n<lista_get_tamanho(arvore_obter_vertices(arvore)); n++){
+    for(n=0; n<tamanho; n++){
         printf("\tVertice [%d]: %c\n", n, vetor_arvore[n]);
     }
 #endif // DEBUG
@@ -201,7 +198,42 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
 
 void descompactar(const char* arquivo_i, const char* arquivo_f){
 
+    FILE* file_in;
+    FILE* file_out;
+    int i;
 
+    if (arquivo_i == NULL || arquivo_f == NULL){
+		fprintf(stderr, "compactar: ponteiros invalidos\n");
+		exit(EXIT_FAILURE);
+	}
 
+    file_in = fopen(arquivo_i, "rb");
+    if (file_in == NULL){
+		perror("compactar: erro fopen\n");
+		exit(EXIT_FAILURE);
+	}
+
+    file_out = fopen(arquivo_f, "wb");
+    if (file_out == NULL){
+		perror("compactar: erro fopen\n");
+		exit(EXIT_FAILURE);
+	}
+
+	int tamanho;
+	fread(&tamanho, sizeof(int), 1, file_in);
+
+    char* vetor_arvore = malloc(sizeof(char)*tamanho);
+    for(i=0; i<tamanho; i++){
+        fread(&vetor_arvore[i], sizeof(char), 1, file_in);
+    }
+
+#ifdef DEBUG
+    int n;
+    printf("\nElementos do vetor gerado na leitura da arvore:\n");
+
+    for(n=0; n<tamanho; n++){
+        printf("\tVertice [%d]: %c\n", n, vetor_arvore[n]);
+    }
+#endif // DEBUG
 }
 
