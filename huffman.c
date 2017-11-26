@@ -171,6 +171,13 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     arvore = cria_arvore_huffman(arvore);
     char* vetor_arvore = arvore_cria_vetor_caracteres(arvore, arvore_get_raiz(arvore));
 
+    int tamanho = lista_get_tamanho(arvore_obter_vertices(arvore));
+    fwrite(&tamanho, sizeof(tamanho), 1, file_out);
+
+    int i;
+    for(i=0; i<lista_get_tamanho(arvore_obter_vertices(arvore)); i++){
+        fwrite(&vetor_arvore[i], sizeof(char), 1, file_out);
+    }
 #ifdef DEBUG
     int n;
 
@@ -188,6 +195,8 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     arvore_exportar_grafo_dot("arvore.dot", arvore);
 #endif // DEBUG
 
+    fclose(file_in);
+    fclose(file_out);
 }
 
 void descompactar(const char* arquivo_i, const char* arquivo_f){

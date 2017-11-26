@@ -355,8 +355,6 @@ char* arvore_cria_vetor_caracteres (arvore_t* arvore, vertice_t* inicial){
             enqueue(vertice_get_dir(elemento), fila);
         }
     }
-
-
-
+    libera_fila(fila);
     return vetor_arvore;
 }
