@@ -47,6 +47,7 @@ void frequencia_caracter(arvore_t* arvore, FILE* file){
             break;
 
     }
+    rewind(file);
 
 #ifdef DEBUG
     imprimi_freq(arvore);
@@ -126,13 +127,12 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
 
 byte_t criar_byte(int* bits){
 
-    char byte = 0;
+    byte_t byte = 0;
     int i;
 
     for(i = 0; i < 8; i++){
-
-        byte += bits[i];
         byte <<= 1;
+        byte += bits[i];
 
     }
 
@@ -146,7 +146,12 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     FILE* file_out;
     arvore_t* arvore;
     pilha_t* pilha;
-    int i, tamanho;
+    fila_t* fila_temp;
+    vertice_t* vertice;
+    int i, tamanho, bit, bit_extra;
+    char caracter;
+    int vetor_bits[8];
+    byte_t byte;
 
     if (arquivo_i == NULL || arquivo_f == NULL){
 		fprintf(stderr, "compactar: ponteiros invalidos\n");
@@ -173,20 +178,78 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     tamanho = lista_get_tamanho(arvore_obter_vertices(arvore));
     fwrite(&tamanho, sizeof(tamanho), 1, file_out);
 
+#ifdef DEBUG
+    printf("\n\nElementos do vetor gerado por arvore_cria_vetor_caracteres:\n");
+#endif // DEBUG
     for(i=0; i<tamanho; i++){
         fwrite(&vetor_arvore[i], sizeof(char), 1, file_out);
-    }
 #ifdef DEBUG
-    int n;
-    printf("\n\nElementos do vetor gerado por arvore_cria_vetor_caracteres:\n");
-    for(n=0; n<tamanho; n++){
-        printf("\tVertice [%d]: %c\n", n, vetor_arvore[n]);
-    }
+        if(vetor_arvore[i] > 31)
+            printf("\tVertice [%d]: %c\n", i, vetor_arvore[i]);
+        else
+            printf("\tVertice [%d]: ' '\n", i);
 #endif // DEBUG
+    }
 
     pilha = cria_pilha();
-    //varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
+    varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
     libera_pilha(pilha);
+
+    i = 0;
+    fila_temp = cria_fila();
+#ifdef DEBUG
+    printf("\n\nEscrevendo no arquivo: \n\n\t");
+#endif // DEBUG
+    while(!feof(file_in)){
+
+        caracter = fgetc(file_in);
+        vertice = arvore_procura_simbolo(arvore, caracter);
+        while( !fila_vazia(vertice_get_bits(vertice)) ){
+
+            bit = dequeue_int( vertice_get_bits(vertice) );
+            enqueue_int(bit, fila_temp);
+
+            vetor_bits[i] = bit;
+        #ifdef DEBUG
+            printf("%d", vetor_bits[i]);
+        #endif // DEBUG
+
+            i++;
+            if(i == 8){
+                byte = criar_byte(vetor_bits);
+            #ifdef DEBUG
+                printf("\tbyte: %x\n\t", byte);
+            #endif // DEBUG
+                fwrite(&byte, sizeof(char), 1, file_out);
+                i = 0;
+            }
+        }
+
+        while(!fila_vazia(fila_temp))
+            enqueue_int(dequeue_int(fila_temp), vertice_get_bits(vertice));
+
+    }
+
+    bit_extra = 0;
+    if(i != 0){
+        while(i < 8){
+            bit_extra++;
+            vetor_bits[i] = 0;
+        #ifdef DEBUG
+            printf("%d", vetor_bits[i]);
+        #endif // DEBUG
+            i++;
+        }
+        byte = criar_byte(vetor_bits);
+    #ifdef DEBUG
+        printf("\tbyte: %x\n\t", byte);
+    #endif // DEBUG
+        fwrite(&byte, sizeof(char), 1, file_out);
+    }
+    printf("bit extra: %d \n", bit_extra);
+
+    libera_fila(fila_temp);
+    rewind(file_in);
 
 #ifdef DEBUG
     arvore_exportar_grafo_dot("arvore.dot", arvore);
@@ -201,6 +264,7 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
     FILE* file_in;
     FILE* file_out;
     int i;
+	int tamanho;
 
     if (arquivo_i == NULL || arquivo_f == NULL){
 		fprintf(stderr, "compactar: ponteiros invalidos\n");
@@ -219,21 +283,23 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
 		exit(EXIT_FAILURE);
 	}
 
-	int tamanho;
 	fread(&tamanho, sizeof(int), 1, file_in);
 
+#ifdef DEBUG
+    printf("\nElementos do vetor gerado na leitura da arvore:\n");
+#endif // DEBUG
     char* vetor_arvore = malloc(sizeof(char)*tamanho);
     for(i=0; i<tamanho; i++){
         fread(&vetor_arvore[i], sizeof(char), 1, file_in);
-    }
-
 #ifdef DEBUG
-    int n;
-    printf("\nElementos do vetor gerado na leitura da arvore:\n");
-
-    for(n=0; n<tamanho; n++){
-        printf("\tVertice [%d]: %c\n", n, vetor_arvore[n]);
-    }
+        if(vetor_arvore[i] > 31)
+            printf("\tVertice [%d]: %c\n", i, vetor_arvore[i]);
+        else
+            printf("\tVertice [%d]: ' '\n", i);
 #endif // DEBUG
+    }
+
+
+
 }
 

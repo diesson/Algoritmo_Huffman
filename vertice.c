@@ -13,22 +13,22 @@
 #define DEBUG
 
 struct vertices{
-	int id;
-	char simbolo;
-	int freq;
+    int id;
+    char simbolo;
+    int freq;
 
-	fila_t* bits;
+    fila_t* bits;
 	//byte_t info;
 
     vertice_t* pai;
-	vertice_t* direita;
-	vertice_t* esquerda;
+    vertice_t* direita;
+    vertice_t* esquerda;
 
 };
 
 vertice_t *cria_vertice(int id){
 
-	vertice_t *p = NULL;
+    vertice_t *p = NULL;
     fila_t* fila;
 
 	p = malloc(sizeof(vertice_t));
@@ -186,6 +186,18 @@ void vertice_set_freq(vertice_t* vertice, int freq){
 	}
 
 	vertice->freq = freq;
+
+}
+
+fila_t* vertice_get_bits(vertice_t *vertice){
+
+	if (vertice == NULL)
+	{
+		fprintf(stderr, "vertice_obter_id: vertice invalido!\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return vertice->bits;
 
 }
 

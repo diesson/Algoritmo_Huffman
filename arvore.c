@@ -264,7 +264,7 @@ vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s){
 
 	no_t *no_lista;
 	vertice_t *vertice;
-	int meu_s;
+  int meu_s;
 
 	if (arvore == NULL)	{
 		fprintf(stderr,"arvore_procura_simbolo: arvore invalida!");
@@ -297,7 +297,7 @@ vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s){
 void imprimi_freq(arvore_t* arvore){
 
     no_t* no_vert;
-	vertice_t* vertice;
+    vertice_t* vertice;
 
     no_vert = obter_cabeca(arvore->vertices);
     while (no_vert){
@@ -332,18 +332,17 @@ void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
 
 }
 
-char* arvore_cria_vetor_caracteres (arvore_t* arvore, vertice_t* inicial){
+char* arvore_cria_vetor_caracteres(arvore_t* arvore, vertice_t* inicial){
 
     int n = lista_get_tamanho(arvore->vertices);
     char* vetor_arvore = NULL;
 
-	vetor_arvore = (char*) malloc(sizeof(char)*n);
+    vetor_arvore = (char*) malloc(sizeof(char)*n);
+
+    fila_t* fila = cria_fila();
+    enqueue(inicial, fila);
 
     n = 0;
-    fila_t* fila = cria_fila();
-
-    enqueue(inicial,fila);
-
     while (!fila_vazia(fila)){
         vertice_t* elemento = dequeue(fila);
         vetor_arvore[n++] = vertice_get_simbolo(elemento);
@@ -357,4 +356,5 @@ char* arvore_cria_vetor_caracteres (arvore_t* arvore, vertice_t* inicial){
     }
     libera_fila(fila);
     return vetor_arvore;
+
 }
