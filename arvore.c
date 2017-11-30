@@ -162,10 +162,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
             fprintf(file, "\t%d -- %d [label = 1];\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
             if(vertice_get_id(vertice_get_esq(vertice)) < 257){
                 if(vertice_get_simbolo(vertice_get_esq(vertice)) < 32)
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_esq(vertice)),
-                        vertice_get_freq(vertice_get_esq(vertice)));
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                        vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
                 else
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
             }else{
                 fprintf(file, "\t%d [ label = \" (FREQ: %d)\"];\n", vertice_get_id(vertice_get_esq(vertice)),
@@ -178,10 +178,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
             fprintf(file, "\t%d -- %d [label = 0];\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
             if(vertice_get_id(vertice_get_dir(vertice)) < 257){
                 if(vertice_get_simbolo(vertice_get_dir(vertice)) < 32)
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_dir(vertice)),
-                        vertice_get_freq(vertice_get_dir(vertice)));
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                        vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
                 else
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
 
             }else{
@@ -332,29 +332,25 @@ void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
 
 }
 
-char* arvore_cria_vetor_caracteres(arvore_t* arvore, vertice_t* inicial){
+void exporta_arvore(arvore_t* arvore, FILE* file_out){
 
-    int n = lista_get_tamanho(arvore->vertices);
-    char* vetor_arvore = NULL;
+    int tamanho, bit = 0;
+    tamanho = lista_get_tamanho(arvore->vertices);
 
-    vetor_arvore = (char*) malloc(sizeof(char)*n);
+    fwrite(&tamanho, sizeof(tamanho), 1, file_out);
+    fwrite(&bit, sizeof(bit), 1, file_out);
 
-    fila_t* fila = cria_fila();
-    enqueue(inicial, fila);
+    no_t* no = obter_cabeca(arvore->vertices);
+    while(no){
+        vertice_t* vertice_caracter = obter_dado(no);
 
-    n = 0;
-    while (!fila_vazia(fila)){
-        vertice_t* elemento = dequeue(fila);
-        vetor_arvore[n++] = vertice_get_simbolo(elemento);
+        char simbolo = vertice_get_simbolo(vertice_caracter);
 
-        if(vertice_get_esq(elemento) != NULL){
-            enqueue(vertice_get_esq(elemento), fila);
-        }
-        if(vertice_get_dir(elemento) != NULL){
-            enqueue(vertice_get_dir(elemento), fila);
-        }
+        int freq = vertice_get_freq(vertice_caracter);
+
+        fwrite(&simbolo, sizeof(simbolo), 1, file_out);
+        fwrite(&freq, sizeof(freq), 1, file_out);
+
+        no = obtem_proximo(no);
     }
-    libera_fila(fila);
-    return vetor_arvore;
-
 }

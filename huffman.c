@@ -131,6 +131,7 @@ byte_t criar_byte(int* bits){
     int i;
 
     for(i = 0; i < 8; i++){
+
         byte <<= 1;
         byte += bits[i];
 
@@ -148,7 +149,7 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     pilha_t* pilha;
     fila_t* fila_temp;
     vertice_t* vertice;
-    int i, tamanho, bit, bit_extra;
+    int i, bit, bit_extra;
     char caracter;
     int vetor_bits[8];
     byte_t byte;
@@ -171,35 +172,20 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
 	}
 
     arvore = cria_arvore(1);
+
     frequencia_caracter(arvore, file_in);
+    exporta_arvore(arvore, file_out);
     arvore = cria_arvore_huffman(arvore);
-    char* vetor_arvore = arvore_cria_vetor_caracteres(arvore, arvore_get_raiz(arvore));
-
-    tamanho = lista_get_tamanho(arvore_obter_vertices(arvore));
-    fwrite(&tamanho, sizeof(tamanho), 1, file_out);
-
-#ifdef DEBUG
-    printf("\n\nElementos do vetor gerado por arvore_cria_vetor_caracteres:\n");
-#endif // DEBUG
-    for(i=0; i<tamanho; i++){
-        fwrite(&vetor_arvore[i], sizeof(char), 1, file_out);
-#ifdef DEBUG
-        if(vetor_arvore[i] > 31)
-            printf("\tVertice [%d]: %c\n", i, vetor_arvore[i]);
-        else
-            printf("\tVertice [%d]: ' '\n", i);
-#endif // DEBUG
-    }
 
     pilha = cria_pilha();
     varrer_arvore(arvore_get_raiz(arvore), -1, pilha);
     libera_pilha(pilha);
 
-    i = 0;
     fila_temp = cria_fila();
 #ifdef DEBUG
     printf("\n\nEscrevendo no arquivo: \n\n\t");
 #endif // DEBUG
+    i = 0;
     while(!feof(file_in)){
 
         caracter = fgetc(file_in);
@@ -246,10 +232,15 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     #endif // DEBUG
         fwrite(&byte, sizeof(char), 1, file_out);
     }
+#ifdef DEBUG
     printf("bit extra: %d \n", bit_extra);
+#endif // DEBUG
 
     libera_fila(fila_temp);
     rewind(file_in);
+
+    fseek(file_out, 4, SEEK_SET);
+    fwrite(&bit_extra, sizeof(bit_extra), 1, file_out);
 
 #ifdef DEBUG
     arvore_exportar_grafo_dot("arvore.dot", arvore);
@@ -263,8 +254,11 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
 
     FILE* file_in;
     FILE* file_out;
-    int i;
-	int tamanho;
+    arvore_t* arvore;
+	int tamanho, bit_extra, i, j, bits, mascara, freq_temp;
+	char simbolo_temp;
+    byte_t byte;
+    vertice_t* vertice;
 
     if (arquivo_i == NULL || arquivo_f == NULL){
 		fprintf(stderr, "compactar: ponteiros invalidos\n");
@@ -284,21 +278,67 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
 	}
 
 	fread(&tamanho, sizeof(int), 1, file_in);
+	fread(&bit_extra, sizeof(int), 1, file_in);
 
-#ifdef DEBUG
-    printf("\nElementos do vetor gerado na leitura da arvore:\n");
-#endif // DEBUG
-    char* vetor_arvore = malloc(sizeof(char)*tamanho);
+	arvore = cria_arvore(2);
+
     for(i=0; i<tamanho; i++){
-        fread(&vetor_arvore[i], sizeof(char), 1, file_in);
-#ifdef DEBUG
-        if(vetor_arvore[i] > 31)
-            printf("\tVertice [%d]: %c\n", i, vetor_arvore[i]);
-        else
-            printf("\tVertice [%d]: ' '\n", i);
-#endif // DEBUG
+
+        fread(&simbolo_temp, sizeof(char), 1, file_in);
+        fread(&freq_temp, sizeof(int), 1, file_in);
+
+        vertice_t* novo_vertice = arvore_adicionar_vertice_id(arvore, i);
+        vertice_set_simbolo(novo_vertice, simbolo_temp);
+        vertice_set_freq(novo_vertice, freq_temp);
+
     }
 
+    arvore = cria_arvore_huffman(arvore);
+
+    vertice = arvore_get_raiz(arvore);
+    j = 0;
+    while(1){
+
+        fread(&byte, sizeof(char), 1, file_in);
+
+        if (feof(file_in))
+            break;
+
+        printf("byte: %x\n", byte);
+        if(feof(file_in)){
+            j = bit_extra;
+            printf("Fala galera: %d - %x\n", bit_extra, byte);
+        }
+
+        mascara = 128;
+        for(i = 0; i < 8 - j; i++){
+
+            bits = byte & mascara;
+            bits  >>= (7 - i);
+            mascara /= 2;
+
+            printf("%d", bits);
+
+            if(bits == 1){
+                vertice = vertice_get_esq(vertice);
+            }else if(bits == 0){
+                vertice = vertice_get_dir(vertice);
+            }else{
+                perror("Deu ruim em: ");
+                exit(EXIT_FAILURE);
+            }
+
+            if(vertice_eh_folha(vertice)){
+
+                simbolo_temp = vertice_get_simbolo(vertice);
+                printf("\t: %c\n", simbolo_temp);
+                fwrite(&simbolo_temp, sizeof(char), 1, file_out);
+                vertice = arvore_get_raiz(arvore);
+            }
+
+        }
+
+    }
 
 
 }
