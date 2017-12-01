@@ -15,7 +15,7 @@
 struct vertices{
     int id;
     char simbolo;
-    int freq;
+    unsigned int freq;
 
     fila_t* bits;
 	//byte_t info;
@@ -167,7 +167,7 @@ int vertice_eh_folha(vertice_t *vertice){
 
 }
 
-int vertice_get_freq(vertice_t * vertice){
+unsigned int vertice_get_freq(vertice_t * vertice){
 
 	if (vertice == NULL){
 			fprintf(stderr, "vertice_get_freq: vertice invalido\n");
@@ -178,7 +178,7 @@ int vertice_get_freq(vertice_t * vertice){
 
 }
 
-void vertice_set_freq(vertice_t* vertice, int freq){
+void vertice_set_freq(vertice_t* vertice, unsigned int freq){
 
 	if (vertice == NULL){
 			fprintf(stderr, "vertice_set_freq: vertice invalido\n");

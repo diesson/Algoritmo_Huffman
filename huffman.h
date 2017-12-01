@@ -5,6 +5,8 @@
 #include "no.h"
 #include "arvore.h"
 
+typedef struct dicionario dicionario_t;
+
 void compactar(const char* arquivo_i, const char* arquivo_f);
 void descompactar(const char* arquivo_i, const char* arquivo_f);
 

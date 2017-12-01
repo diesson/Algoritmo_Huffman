@@ -26,9 +26,9 @@ char vertice_get_simbolo(vertice_t* vertice);
 
 int vertice_eh_folha(vertice_t* vertice);
 
-int vertice_get_freq(vertice_t * vertice);
+unsigned int vertice_get_freq(vertice_t * vertice);
 fila_t* vertice_get_bits(vertice_t *vertice);
-void vertice_set_freq(vertice_t * vertice, int freq);
+void vertice_set_freq(vertice_t* vertice, unsigned int freq);
 void guardar_bits(pilha_t* pilha, vertice_t* vert);
 
 #endif /* GRAFO_VERTICE_H_ */

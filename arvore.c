@@ -339,6 +339,7 @@ void exporta_arvore(arvore_t* arvore, FILE* file_out){
 
     fwrite(&tamanho, sizeof(tamanho), 1, file_out);
     fwrite(&bit, sizeof(bit), 1, file_out);
+    fwrite(&bit, sizeof(bit), 1, file_out);
 
     no_t* no = obter_cabeca(arvore->vertices);
     while(no){
