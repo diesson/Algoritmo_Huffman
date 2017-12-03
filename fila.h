@@ -1,9 +1,7 @@
 #ifndef FILA_H_INCLUDED
 #define FILA_H_INCLUDED
 
-
 typedef struct filas fila_t;
-
 
 fila_t * cria_fila (void);
 

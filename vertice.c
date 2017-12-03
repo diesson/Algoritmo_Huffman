@@ -5,7 +5,6 @@
 #include "lista_enc.h"
 #include "no.h"
 #include "fila.h"
-#include "pilha.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -18,7 +17,6 @@ struct vertices{
     unsigned int freq;
 
     fila_t* bits;
-	//byte_t info;
 
     vertice_t* pai;
     vertice_t* direita;

@@ -6,7 +6,6 @@
 #include "lista_enc.h"
 #include "no.h"
 #include "pilha.h"
-//#include "fila.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -32,6 +31,37 @@ arvore_t *cria_arvore(int id){
 
 	return p;
 
+}
+
+void arvore_set_raiz(arvore_t* arvore, vertice_t* vertice){
+
+	if (arvore == NULL){
+			fprintf(stderr, "arvore_set_raiz: arvore invalida\n");
+			exit(EXIT_FAILURE);
+	}
+
+	arvore->raiz = vertice;
+
+}
+
+vertice_t* arvore_get_raiz(arvore_t* arvore){
+
+	if (arvore == NULL){
+			fprintf(stderr, "arvore_get_raiz: arvore invalida\n");
+			exit(EXIT_FAILURE);
+	}
+
+	return arvore->raiz;
+}
+
+lista_enc_t* arvore_obter_vertices(arvore_t* arvore){
+
+	if (arvore == NULL){
+		fprintf(stderr, "arvore_obter_vertices: arvore invalida\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return arvore->vertices;
 }
 
 vertice_t* arvore_adicionar_vertice_id(arvore_t *arvore, int id){
@@ -106,30 +136,6 @@ vertice_t* arvore_procura_vertice(arvore_t* arvore, int id){
 	}
 
 	return NULL;
-
-}
-
-void arvore_adiciona_filhos(arvore_t * arvore, vertice_t *vertice, int esq, int dir){
-
-	vertice_t *esquerda;
-	vertice_t *direita;
-
-	if (arvore == NULL)	{
-		fprintf(stderr,"arvore_adiciona_filhos: arvore invalida!");
-		exit(EXIT_FAILURE);
-	}
-
-	if (esq != -1){
-		esquerda = arvore_procura_vertice(arvore, esq);
-		vertice_set_pai(esquerda, vertice);
-		vertice_set_esq(vertice, esquerda);
-	}
-
-	if (dir != -1){
-		direita = arvore_procura_vertice(arvore, dir);
-		vertice_set_pai(direita, vertice);
-		vertice_set_dir(vertice, direita);
-	}
 
 }
 
@@ -229,37 +235,6 @@ void libera_arvore(arvore_t* arvore){
 
 }
 
-void arvore_set_raiz(arvore_t* arvore, vertice_t* vertice){
-
-	if (arvore == NULL){
-			fprintf(stderr, "arvore_set_raiz: arvore invalida\n");
-			exit(EXIT_FAILURE);
-	}
-
-	arvore->raiz = vertice;
-
-}
-
-vertice_t* arvore_get_raiz(arvore_t* arvore){
-
-	if (arvore == NULL){
-			fprintf(stderr, "arvore_get_raiz: arvore invalida\n");
-			exit(EXIT_FAILURE);
-	}
-
-	return arvore->raiz;
-}
-
-lista_enc_t* arvore_obter_vertices(arvore_t* arvore){
-
-	if (arvore == NULL){
-		fprintf(stderr, "arvore_obter_vertices: arvore invalida\n");
-		exit(EXIT_FAILURE);
-	}
-
-	return arvore->vertices;
-}
-
 vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s){
 
 	no_t *no_lista;
@@ -325,6 +300,7 @@ void varrer_arvore(vertice_t* vertice, int bit, pilha_t* pilha){
     varrer_arvore( vertice_get_dir(vertice), 0, pilha );
 
     if(vertice_eh_folha(vertice))
+
         guardar_bits(pilha, vertice);
 
     if(!pilha_vazia(pilha))

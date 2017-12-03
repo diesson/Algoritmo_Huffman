@@ -30,46 +30,6 @@ pilha_t * cria_pilha (void)
     return pilha;
 }
 
-//adiciona elemento
-void push(void* dado, pilha_t *pilha)
-{
-	no_t *no;
-
-    if (pilha == NULL) {
-        fprintf(stderr, "push: pilha invalida\n");
-        exit(EXIT_FAILURE);
-    }
-
-    #ifdef DEBUG
-    printf("push: %x\n", dado);
-    #endif // DEBUG
-
-    no = cria_no(dado);
-    add_cauda(pilha->dados, no);
-}
-
-//retira elemento do topo
-void *pop(pilha_t *pilha)
-{
-	no_t *no;
-	void *dado;
-
-    if (pilha == NULL){
-        fprintf(stderr, "pop: pilha invalida!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    #ifdef DEBUG
-    //printf("pop: %d\n", pilha->data[topo - 1]);
-    #endif // DEBUG
-
-    no = remover_cauda(pilha->dados);
-    dado = obter_dado(no);
-    free(no);
-
-    return dado;
-}
-
 void libera_pilha(pilha_t* pilha)
 {
 	if (pilha == NULL) {
@@ -97,6 +57,7 @@ int pilha_vazia(pilha_t *pilha)
     return lista_vazia(pilha->dados);
 }
 
+// Insere elemento no topo da pilha
 void push_int(int dado, pilha_t *pilha){
 
 	no_t *no;
@@ -111,7 +72,7 @@ void push_int(int dado, pilha_t *pilha){
 
 }
 
-//retira elemento do topo
+// Retira elemento do topo
 int pop_int(pilha_t *pilha){
 
 	no_t *no;
@@ -127,5 +88,4 @@ int pop_int(pilha_t *pilha){
     free(no);
 
     return dado;
-
 }
