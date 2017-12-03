@@ -165,6 +165,16 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     arvore_adicionar_vertice(arvore_huffman, vertice_get_pai(menor_vertice_1));
     arvore_set_raiz(arvore_huffman, vertice_get_pai(menor_vertice_1));
 
+    while(!fila_vazia(fila_1))
+        dequeue(fila_1);
+
+    while(!fila_vazia(fila_2))
+        dequeue(fila_2);
+
+    libera_fila(fila_1);
+    libera_fila(fila_2);
+    free(arvore);
+
     return arvore_huffman;
 }
 
@@ -172,7 +182,7 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     criar_byte:
         Por limitações na manipulação direta de bits, a necessidade de manipular a informação
         apenas com bytes completos requer o uso de uma função que insira os bits, um a um, em
-        em um conjunto do tamanho de um byte.
+        um conjunto do tamanho de um byte.
 */
 byte_t criar_byte(unsigned int* bits){
 
@@ -324,6 +334,7 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
 
     taxa_de_compressao(file_in, file_out);
 
+    libera_arvore(arvore);
     fclose(file_in);
     fclose(file_out);
 }
@@ -371,7 +382,7 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
 	fread(&bit_extra, sizeof(bit_extra), 1, file_in); // Número de bits extras adicionados ao último byte
 	fread(&tamanho_texto, sizeof(tamanho_texto), 1, file_in); // Tamanho do texto compactado
 
-	arvore = cria_arvore(2);
+	arvore = cria_arvore(1);
 
     // Alocação do espaço destinado à informação codificada do arquivo
     dicio = malloc(sizeof(dicionario_t)*tamanho);
@@ -414,7 +425,7 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
     #endif // DEBUG
     for(qtd_byte = 0; qtd_byte < tamanho_texto; qtd_byte++){
 
-        // Quando encontra o final do texto, diminui o laço proporcionala ao número de bits extras adicionados
+        // Quando encontra o final do texto, diminui o laço proporcional ao número de bits extras adicionados
         if(qtd_byte >= (tamanho_texto - 1) ){
             j = bit_extra;
         }
@@ -451,6 +462,12 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
             }
         }
     }
+
+    libera_arvore(arvore);
+    free(dicio);
+    free(texto);
+    fclose(file_in);
+    fclose(file_out);
 }
 
 void taxa_de_compressao(FILE* file_1, FILE* file_2){
@@ -460,16 +477,16 @@ void taxa_de_compressao(FILE* file_1, FILE* file_2){
     // Obtém tamanho do arquivo original
     fseek(file_1, 0, SEEK_END);
     tamanho_1 = ftell(file_1);
-    printf("arquivo_1: %.0f bytes\n", tamanho_1);
+    printf("Arquivo de Entrada:\t%.0f bytes\n", tamanho_1);
 
     // Obtém tamanho do arquivo compactado
     fseek(file_2, 0, SEEK_END);
     tamanho_2 = ftell(file_2);
-    printf("arquivo_2: %.0f bytes\n", tamanho_2);
+    printf("Arquivo de Saida:\t%.0f bytes\n", tamanho_2);
 
     tamanho_2 = tamanho_1 - tamanho_2;
     tamanho_2 = tamanho_2/tamanho_1;
     tamanho_2 = tamanho_2*100;
 
-    printf("taxa de compressao: %.2f%%\n", tamanho_2);
+    printf("Taxa de compressao:\t%.2f%%\n", tamanho_2);
 }

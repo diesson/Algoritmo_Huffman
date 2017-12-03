@@ -30,5 +30,6 @@ unsigned int vertice_get_freq(vertice_t * vertice);
 fila_t* vertice_get_bits(vertice_t *vertice);
 void vertice_set_freq(vertice_t* vertice, unsigned int freq);
 void guardar_bits(pilha_t* pilha, vertice_t* vert);
+void liberar_bits(vertice_t* vertice);
 
 #endif /* GRAFO_VERTICE_H_ */

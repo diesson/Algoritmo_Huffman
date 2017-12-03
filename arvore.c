@@ -224,6 +224,7 @@ void libera_arvore(arvore_t* arvore){
     no_vert = obter_cabeca(arvore->vertices);
     while (no_vert){
         vertice = obter_dado(no_vert);
+        liberar_bits(vertice);
         free(vertice);
 
         no_liberado = no_vert;
@@ -239,7 +240,7 @@ vertice_t* arvore_procura_simbolo(arvore_t* arvore, char s){
 
 	no_t *no_lista;
 	vertice_t *vertice;
-  int meu_s;
+    int meu_s;
 
 	if (arvore == NULL)	{
 		fprintf(stderr,"arvore_procura_simbolo: arvore invalida!");

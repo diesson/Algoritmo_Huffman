@@ -244,3 +244,19 @@ void guardar_bits(pilha_t* pilha, vertice_t* vert){
     libera_pilha(pilha_2);
     libera_pilha(pilha_3);
 }
+
+void liberar_bits(vertice_t* vertice){
+
+    if (vertice == NULL){
+		fprintf(stderr, "libera_arvore: ponteiros invalidos\n");
+		exit(EXIT_FAILURE);
+	}
+
+	while(!fila_vazia(vertice->bits)){
+        dequeue_int(vertice->bits);
+    }
+
+    libera_fila(vertice->bits);
+
+}
+
