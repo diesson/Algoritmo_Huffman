@@ -15,7 +15,7 @@
 // Pilha
 #include "pilha.h"
 
-#define DEBUG
+#undef DEBUG
 /*
     struct dicionario:
         Estrutura que armazena as informações relativas a cada caracter
@@ -322,6 +322,8 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
     fwrite(&bit_extra, sizeof(bit_extra), 1, file_out); // Numero de bits adicionados no último byte
     fwrite(&tamanho_texto, sizeof(tamanho_texto), 1, file_out); // Tamanho do texto após compactação
 
+    taxa_de_compressao(file_in, file_out);
+
     fclose(file_in);
     fclose(file_out);
 }
@@ -449,4 +451,25 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
             }
         }
     }
+}
+
+void taxa_de_compressao(FILE* file_1, FILE* file_2){
+
+    float tamanho_1, tamanho_2;
+
+    // Obtém tamanho do arquivo original
+    fseek(file_1, 0, SEEK_END);
+    tamanho_1 = ftell(file_1);
+    printf("arquivo_1: %.0f bytes\n", tamanho_1);
+
+    // Obtém tamanho do arquivo compactado
+    fseek(file_2, 0, SEEK_END);
+    tamanho_2 = ftell(file_2);
+    printf("arquivo_2: %.0f bytes\n", tamanho_2);
+
+    tamanho_2 = tamanho_1 - tamanho_2;
+    tamanho_2 = tamanho_2/tamanho_1;
+    tamanho_2 = tamanho_2*100;
+
+    printf("taxa de compressao: %.2f%%\n", tamanho_2);
 }

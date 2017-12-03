@@ -13,4 +13,5 @@ void descompactar(const char* arquivo_i, const char* arquivo_f);
 void frequencia_caracter(arvore_t* arvore, FILE* file);
 arvore_t* cria_arvore_huffman(arvore_t* arvore);
 
+void taxa_de_compressao(FILE* file_1, FILE* file_2);
 #endif // HUFFMAN_INCLUDED
