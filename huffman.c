@@ -15,7 +15,7 @@
 // Pilha
 #include "pilha.h"
 
-#undef DEBUG
+#define DEBUG
 /*
     struct dicionario:
         Estrutura que armazena as informações relativas a cada caracter

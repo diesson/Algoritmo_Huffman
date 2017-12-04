@@ -168,10 +168,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
             fprintf(file, "\t%d -- %d [label = 1];\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
             if(vertice_get_id(vertice_get_esq(vertice)) < 257){
                 if(vertice_get_simbolo(vertice_get_esq(vertice)) < 32)
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_esq(vertice)),
-                        vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                        vertice_get_freq(vertice_get_esq(vertice)));
                 else
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_esq(vertice)),
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)), vertice_get_simbolo(vertice_get_esq(vertice)));
             }else{
                 fprintf(file, "\t%d [ label = \" (FREQ: %d)\"];\n", vertice_get_id(vertice_get_esq(vertice)),
@@ -184,10 +184,10 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
             fprintf(file, "\t%d -- %d [label = 0];\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
             if(vertice_get_id(vertice_get_dir(vertice)) < 257){
                 if(vertice_get_simbolo(vertice_get_dir(vertice)) < 32)
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_dir(vertice)),
-                        vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                        vertice_get_freq(vertice_get_dir(vertice)));
                 else
-                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %x \"];\n", vertice_get_id(vertice_get_dir(vertice)),
+                    fprintf(file, "\t%d [ label = \" (FREQ: %d) %c \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)), vertice_get_simbolo(vertice_get_dir(vertice)));
 
             }else{
