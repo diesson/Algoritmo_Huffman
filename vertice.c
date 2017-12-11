@@ -252,11 +252,10 @@ void liberar_bits(vertice_t* vertice){
 		exit(EXIT_FAILURE);
 	}
 
-	while(!fila_vazia(vertice->bits)){
+    while(!fila_vazia(vertice->bits)){
         dequeue_int(vertice->bits);
     }
 
     libera_fila(vertice->bits);
-
 }
 

@@ -15,7 +15,8 @@
 // Pilha
 #include "pilha.h"
 
-#define DEBUG
+#undef DEBUG
+#define ARVORE_DEBUG
 /*
     struct dicionario:
         Estrutura que armazena as informações relativas a cada caracter
@@ -79,15 +80,12 @@ void frequencia_caracter(arvore_t* arvore, FILE* file){
         como modelo para a codificação dos caracteres de forma a reduzir a quantidade
         de bits necessária para representá-los.
 */
-arvore_t* cria_arvore_huffman(arvore_t* arvore){
+void cria_arvore_huffman(arvore_t* arvore){
 
     if (arvore == NULL){
         perror("cria_arvore_huffman: ");
         exit(EXIT_FAILURE);
     }
-
-    // Estrutura de destino para a árvore gerada
-    arvore_t* arvore_huffman = cria_arvore(2);
 
     fila_t* fila_1 = cria_fila();
     fila_t* fila_2 = cria_fila();
@@ -153,8 +151,8 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
         vertice_set_pai(menor_vertice_2, novo_vertice);
 
         // Vértices já selecionados não entram novamente na busca e são jogados na estrutura que armazena a árvore de Huffman
-        arvore_adicionar_vertice(arvore_huffman, menor_vertice_1);
-        arvore_adicionar_vertice(arvore_huffman, menor_vertice_2);
+        if(arvore_procura_vertice(arvore, i) == NULL)
+            arvore_adicionar_vertice(arvore, novo_vertice);
 
         // O novo vértice criado como referência participa da próxima etapa da busca por menores frequências
         enqueue(novo_vertice, fila_1);
@@ -162,8 +160,10 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
     }
 
     // O vértice restante (com maior frequência) ao final do processo é automaticamente adicionado como raiz da árvore de Huffman
-    arvore_adicionar_vertice(arvore_huffman, vertice_get_pai(menor_vertice_1));
-    arvore_set_raiz(arvore_huffman, vertice_get_pai(menor_vertice_1));
+    if(arvore_procura_vertice(arvore, vertice_get_id(menor_vertice_1)) == NULL)
+        arvore_adicionar_vertice(arvore, vertice_get_pai(menor_vertice_1));
+
+    arvore_set_raiz(arvore, vertice_get_pai(menor_vertice_1));
 
     while(!fila_vazia(fila_1))
         dequeue(fila_1);
@@ -173,9 +173,7 @@ arvore_t* cria_arvore_huffman(arvore_t* arvore){
 
     libera_fila(fila_1);
     libera_fila(fila_2);
-    free(arvore);
 
-    return arvore_huffman;
 }
 
 /*
@@ -247,10 +245,10 @@ void compactar(const char* arquivo_i, const char* arquivo_f){
 
     // Imprime cabeçalho do arquivo compactado
     exporta_arvore(arvore, file_out);
-    arvore = cria_arvore_huffman(arvore);
+    cria_arvore_huffman(arvore);
 
     // Depuração que exporta a árvore de Huffman gerada
-#ifdef DEBUG
+#ifdef ARVORE_DEBUG
     printf("\ncompactar: arvore de Huffman criada com base no arquivo de entrada");
     arvore_exportar_grafo_dot("arvore.dot", arvore);
 #endif // DEBUG
@@ -408,7 +406,7 @@ void descompactar(const char* arquivo_i, const char* arquivo_f){
     }
 
     // Cria árvore de Huffman baseda na árvore temporária contendo os caracteres do dicionário
-    arvore = cria_arvore_huffman(arvore);
+    cria_arvore_huffman(arvore);
 
     // Alocação do espaço destinado ao texto lido
     texto = malloc(sizeof(byte_t)*tamanho_texto);

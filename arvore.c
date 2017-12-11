@@ -167,7 +167,7 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         if(vertice_get_esq(vertice) != NULL){
             fprintf(file, "\t%d -- %d [label = 1];\n", vertice_get_id(vertice), vertice_get_id(vertice_get_esq(vertice) ));
             if(vertice_get_id(vertice_get_esq(vertice)) < 257){
-                if(vertice_get_simbolo(vertice_get_esq(vertice)) < 32)
+                if((vertice_get_simbolo(vertice_get_esq(vertice)) < 32) || (vertice_get_simbolo(vertice_get_esq(vertice)) == 34))
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_esq(vertice)),
                         vertice_get_freq(vertice_get_esq(vertice)));
                 else
@@ -183,7 +183,7 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
         if(vertice_get_dir(vertice) != NULL){
             fprintf(file, "\t%d -- %d [label = 0];\n", vertice_get_id(vertice), vertice_get_id( vertice_get_dir(vertice) ));
             if(vertice_get_id(vertice_get_dir(vertice)) < 257){
-                if(vertice_get_simbolo(vertice_get_dir(vertice)) < 32)
+                if((vertice_get_simbolo(vertice_get_dir(vertice)) < 32) || (vertice_get_simbolo(vertice_get_dir(vertice)) == 34))
                     fprintf(file, "\t%d [ label = \" (FREQ: %d) ' ' \"];\n", vertice_get_id(vertice_get_dir(vertice)),
                         vertice_get_freq(vertice_get_dir(vertice)));
                 else
@@ -207,6 +207,8 @@ void arvore_exportar_grafo_dot(const char* filename, arvore_t* grafo){
 	fprintf(file, "}\n");
 	printf("}\n");
     fclose(file);
+
+    system("dot -Tpng arvore.dot -o arvore.png");
 
 }
 
