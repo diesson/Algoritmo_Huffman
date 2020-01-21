@@ -1,8 +1,6 @@
-# Algoritmo_Huffman
-Algoritmo de Huffman
+# Algoritmo de Huffman para compactacao e descompactacao de arquivos
 
 Uso: huffman [OPCAO] [ARQUIVO] [ARQUIVO]
-Algoritmo de compactacao e descompactacao de arquivos.
 
 Opcoes:
 	-c		Compacta o arquivo, gerando um novo com a extensao .dej
